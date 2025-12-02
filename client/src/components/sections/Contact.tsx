@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
 
@@ -81,10 +81,15 @@ export default function Contact() {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Let's Work Together</h2>
-            <p className="text-muted-foreground text-lg mb-12">
+            <p className="text-muted-foreground text-lg mb-8">
               Ready to start your next project? Contact us for a free consultation 
               and let's discuss how we can help transform your ideas into reality.
             </p>
+            
+            <div className="flex items-center gap-2 text-primary font-medium mb-12 bg-primary/5 p-4 rounded-lg border border-primary/10 inline-flex">
+              <Clock className="w-5 h-5" />
+              <span>We typically respond within 24 hours</span>
+            </div>
 
             <div className="space-y-8">
               <div className="flex items-start gap-4">
@@ -104,6 +109,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-lg">Call Us</h3>
                   <p className="text-muted-foreground">+91 9098635331</p>
+                  <p className="text-sm text-muted-foreground mt-1">Mon-Sat: 10 AM - 7 PM IST</p>
                 </div>
               </div>
 
