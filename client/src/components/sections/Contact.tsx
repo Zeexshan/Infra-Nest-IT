@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from "@emailjs/browser";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -18,6 +20,8 @@ const formSchema = z.object({
 
 export default function Contact() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,12 +33,39 @@ export default function Contact() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-    form.reset();
+    setIsSubmitting(true);
+    
+    const serviceId = "service_2x8ti1r";
+    const templateId = "template_9tugzf8";
+    const publicKey = "-yN0-T9hqjLEqKO_X";
+
+    const templateParams = {
+      user_name: values.name,
+      user_email: values.email,
+      contact_number: values.phone,
+      message: values.message,
+    };
+
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+        form.reset();
+      })
+      .catch((err) => {
+        console.error('FAILED...', err);
+        toast({
+          title: "Failed to send message",
+          description: "Please try again later or contact us directly.",
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   return (
@@ -62,7 +93,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Email Us</h3>
-                  <p className="text-muted-foreground">contact@infranestit.com</p>
+                  <p className="text-muted-foreground">infranestit@gmail.com</p>
                 </div>
               </div>
 
@@ -72,7 +103,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">Call Us</h3>
-                  <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                  <p className="text-muted-foreground">+91 9098635331</p>
                 </div>
               </div>
 
@@ -83,8 +114,9 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-lg">Visit Us</h3>
                   <p className="text-muted-foreground">
-                    Tech Valley, Innovation Street<br />
-                    San Francisco, CA 94105
+                    2nd Floor, opposite Gurudwara,<br />
+                    above Malwa Graphics, Freeganj,<br />
+                    Ujjain, Madhya Pradesh 456010
                   </p>
                 </div>
               </div>
@@ -136,7 +168,7 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel>Phone</FormLabel>
                         <FormControl>
-                          <Input placeholder="+1 (555) 000-0000" {...field} className="bg-background/50" />
+                          <Input placeholder="+91 9098635331" {...field} className="bg-background/50" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -162,8 +194,12 @@ export default function Contact() {
                   )}
                 />
 
-                <Button type="submit" size="lg" className="w-full">
-                  Send Message <Send className="ml-2 h-4 w-4" />
+                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    <>Sending... <Loader2 className="ml-2 h-4 w-4 animate-spin" /></>
+                  ) : (
+                    <>Send Message <Send className="ml-2 h-4 w-4" /></>
+                  )}
                 </Button>
               </form>
             </Form>
