@@ -6,7 +6,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Mail, Phone, MapPin, Send, Loader2, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from "@emailjs/browser";
@@ -21,7 +28,7 @@ const formSchema = z.object({
 export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,7 +41,7 @@ export default function Contact() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    
+
     const serviceId = "service_2x8ti1r";
     const templateId = "template_9tugzf8";
     const publicKey = "-yN0-T9hqjLEqKO_X";
@@ -46,9 +53,10 @@ export default function Contact() {
       message: values.message,
     };
 
-    emailjs.send(serviceId, templateId, templateParams, publicKey)
+    emailjs
+      .send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
+        console.log("SUCCESS!", response.status, response.text);
         toast({
           title: "Message Sent!",
           description: "We'll get back to you as soon as possible.",
@@ -56,7 +64,7 @@ export default function Contact() {
         form.reset();
       })
       .catch((err) => {
-        console.error('FAILED...', err);
+        console.error("FAILED...", err);
         toast({
           title: "Failed to send message",
           description: "Please try again later or contact us directly.",
@@ -72,7 +80,6 @@ export default function Contact() {
     <section id="contact" className="py-24 bg-background relative">
       <div className="container px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
-          
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -80,12 +87,15 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Let's Work Together</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Let's Work Together
+            </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              Ready to start your next project? Contact us for a free consultation 
-              and let's discuss how we can help transform your ideas into reality.
+              Ready to start your next project? Contact us for a free
+              consultation and let's discuss how we can help transform your
+              ideas into reality.
             </p>
-            
+
             <div className="flex items-center gap-2 text-primary font-medium mb-12 bg-primary/5 p-4 rounded-lg border border-primary/10 inline-flex">
               <Clock className="w-5 h-5" />
               <span>We typically respond within 24 hours</span>
@@ -109,7 +119,9 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-lg">Call Us</h3>
                   <p className="text-muted-foreground">+91 9098635331</p>
-                  <p className="text-sm text-muted-foreground mt-1">Mon-Sat: 10 AM - 7 PM IST</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Mon-Sat: 10 AM - 7 PM IST
+                  </p>
                 </div>
               </div>
 
@@ -120,8 +132,10 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-lg">Visit Us</h3>
                   <p className="text-muted-foreground">
-                    2nd Floor, opposite Gurudwara,<br />
-                    above Malwa Graphics, Freeganj,<br />
+                    2nd Floor, opposite Gurudwara,
+                    <br />
+                    above Malwa Graphics, Freeganj,
+                    <br />
                     Ujjain, Madhya Pradesh 456010
                   </p>
                 </div>
@@ -138,7 +152,10 @@ export default function Contact() {
             className="bg-card p-8 rounded-2xl border border-border/50 shadow-xl"
           >
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -146,13 +163,17 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} className="bg-background/50" />
+                        <Input
+                          placeholder="John Doe"
+                          {...field}
+                          className="bg-background/50"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
@@ -161,7 +182,11 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" {...field} className="bg-background/50" />
+                          <Input
+                            placeholder="john@example.com"
+                            {...field}
+                            className="bg-background/50"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -174,7 +199,11 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel>Phone</FormLabel>
                         <FormControl>
-                          <Input placeholder="+91 9098635331" {...field} className="bg-background/50" />
+                          <Input
+                            placeholder="+91 9098635331"
+                            {...field}
+                            className="bg-background/50"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -189,10 +218,10 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Project Details</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Tell us about your project..." 
-                          className="min-h-[120px] bg-background/50" 
-                          {...field} 
+                        <Textarea
+                          placeholder="Tell us about your project..."
+                          className="min-h-[120px] bg-background/50"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -200,11 +229,21 @@ export default function Contact() {
                   )}
                 />
 
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? (
-                    <>Sending... <Loader2 className="ml-2 h-4 w-4 animate-spin" /></>
+                    <>
+                      Sending...{" "}
+                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    </>
                   ) : (
-                    <>Send Message <Send className="ml-2 h-4 w-4" /></>
+                    <>
+                      Send Message <Send className="ml-2 h-4 w-4" />
+                    </>
                   )}
                 </Button>
               </form>
