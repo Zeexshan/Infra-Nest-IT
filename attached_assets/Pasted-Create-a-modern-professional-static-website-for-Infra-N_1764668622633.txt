@@ -1,0 +1,88 @@
+Create a modern, professional static website for "Infra Nest IT" - a software development company that takes on client projects.
+Requirements:
+
+Header Section:
+
+Navigation bar with company logo (I'll provide the image)
+Menu items: Home, About, Technologies, Services, Contact
+Sticky/fixed navigation with smooth scrolling
+
+
+Hero Section:
+
+Eye-catching headline: "Transform Your Ideas Into Digital Solutions"
+Subheadline about custom software development
+Call-to-action buttons: "Get Started" and "View Technologies"
+Modern gradient background or tech-themed design
+
+
+About Section:
+
+Brief company description
+Why choose Infra Nest IT (3-4 key points like: Experienced Team, Quality Delivery, Latest Technologies, Client-Focused)
+
+
+Technologies Section:
+
+Organized categorically with modern card/grid layout:
+
+Frontend: HTML5, CSS3, JavaScript, JavaScript Advanced, jQuery, Bootstrap, ES6, React.js, TypeScript, Angular JS
+Backend: Python (Core, Advanced, OOPS), Django (ORM, MVC, Rest Framework), Java (Core J2SE, Advanced J2EE/JDBC/Servlet/JSP/MVC), Spring (Core, JDBC+ORM, MVC, Boot, Security), Hibernate ORM, Node.js, Express.js
+Database: MySQL, MongoDB, Oracle SQL
+Programming Fundamentals: C Programming, C++ with OOPS, DSA
+Architecture & Tools: Microservices, REST API, Maven, MERN Stack
+
+
+Use icons or badges for each technology
+Hover effects on cards
+
+
+Services Section:
+
+Custom Software Development
+Web Application Development
+API Development & Integration
+Full Stack Development (MERN)
+Database Design & Management
+
+
+Contact Section:
+
+Contact form (Name, Email, Phone, Project Details, Message)
+Contact information placeholders (email, phone)
+Social media links
+
+
+Footer:
+
+Copyright information
+Quick links
+Social media icons
+
+
+
+Design Specifications:
+
+Modern, clean, professional design
+Responsive for mobile, tablet, and desktop
+Color scheme: Professional blues/teals or modern dark theme with accent colors
+Smooth animations and transitions
+Font: Modern sans-serif (e.g., Inter, Popporo, or Roboto)
+Use CSS Grid and Flexbox for layouts
+
+Technical Stack:
+
+Pure HTML5, CSS3, JavaScript (no frameworks needed for static version)
+Organized file structure: index.html, style.css, script.js
+Comments in code for easy future updates
+Optimized for performance
+
+Additional Features:
+
+Smooth scroll behavior
+Mobile hamburger menu
+Form validation
+Loading animations
+Back to top button
+
+Make it visually impressive, modern, and professional - suitable for attracting corporate clients
