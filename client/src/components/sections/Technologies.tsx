@@ -40,7 +40,7 @@ const techCategories = [
 export default function Technologies() {
   return (
     <section id="technologies" className="py-24 bg-background relative">
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Technology Stack</h2>
           <p className="text-muted-foreground text-lg">
