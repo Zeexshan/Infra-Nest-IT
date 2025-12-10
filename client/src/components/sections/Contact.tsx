@@ -120,7 +120,7 @@ export default function Contact() {
                   <h3 className="font-bold text-lg">Call Us</h3>
                   <p className="text-muted-foreground">+91 9098635331</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Mon-Sat: 10 AM - 7 PM IST
+                    Mon-Sat: 10 AM - 8 PM IST
                   </p>
                 </div>
               </div>
