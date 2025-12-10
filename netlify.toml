@@ -6,3 +6,19 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # This policy allows:
+    # 1. 'unsafe-eval' -> Required for Three.js 3D animations
+    # 2. Google Fonts -> Required for your Inter/Poppins fonts
+    # 3. EmailJS -> Required for your contact form to work
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: blob:;
+      connect-src 'self' https://api.emailjs.com;
+    """
