@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Code2 } from "lucide-react";
 import heroBg from "@assets/generated_images/abstract_tech_background_with_blue_and_teal_network_lines.png";
+import TechScene from "@/components/3d/TechScene";
 
 export default function Hero() {
   const scrollTo = (id: string) => {
@@ -11,15 +12,12 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroBg} 
-          alt="Background" 
-          className="w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/50 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-transparent to-background/90" />
+      {/* 3D Scene Background */}
+      <TechScene />
+
+      {/* Background Image with Overlay (Optional fallback or layered) */}
+      <div className="absolute inset-0 z-[-1]">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/80 to-background" />
       </div>
 
       <div className="container mx-auto relative z-10 px-4 md:px-6">
