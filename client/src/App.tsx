@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import { useEffect } from "react";
 import TermsOfService from "@/pages/TermsOfService";
+import useScrollToTop from "@/hooks/use-scroll-to-top";
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function App() {
       document.removeEventListener("contextmenu", handleContextMenu);
     };
   }, []);
+  useScrollToTop();
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
