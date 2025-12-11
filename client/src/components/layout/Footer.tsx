@@ -1,4 +1,5 @@
 import { Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
+import { Link } from "wouter";
 import logo from "@assets/main_1764668585274.png";
 
 export default function Footer() {
@@ -138,9 +139,10 @@ export default function Footer() {
             <a href="#" className="hover:text-foreground transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              Terms of Service
-            </a>
+            
+          <Link href="/terms" className="hover:text-foreground transition-colors cursor-pointer">
+                    Terms of Service
+            </Link>
           </div>
         </div>
       </div>
