@@ -8,12 +8,14 @@ import Home from "@/pages/Home";
 import { useEffect } from "react";
 import TermsOfService from "@/pages/TermsOfService";
 import useScrollToTop from "@/hooks/use-scroll-to-top";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/terms" component={TermsOfService} />
+      <Route path="/privacy" component={PrivacyPolicy} />
       <Route component={NotFound} />
     </Switch>
   );
