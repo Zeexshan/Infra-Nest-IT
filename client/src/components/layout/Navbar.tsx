@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+// 1. Import useLocation hook to check which page we are on
+import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +17,9 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  
+  // 2. Get the current location object
+  const [location, setLocation] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,9 +29,21 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, href: string) => {
     e.preventDefault();
-    const element = document.querySelector(href);
+    
+    // 3. Logic: If we are NOT on home, go to home. If we ARE on home, scroll.
+    if (location !== "/") {
+      setLocation("/");
+      setIsOpen(false);
+      // Optional: You could save the 'href' to local storage to scroll after load, 
+      // but simply going to Home is the safest fix for now.
+      return;
+    }
+
+    // Normal scroll logic for Homepage
+    const targetId = href.replace('/', ''); // Ensure we just get the ID part
+    const element = document.querySelector(targetId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
       setIsOpen(false);
@@ -43,7 +59,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" onClick={(e) => scrollToSection(e, "#home")} className="flex items-center gap-2">
+          <a href="#home" onClick={(e) => handleNavigation(e, "#home")} className="flex items-center gap-2">
             <img src={logo} alt="Infra Nest IT" className="h-12 w-auto object-contain" />
             <span className="text-xl font-bold font-heading tracking-tight text-foreground hidden sm:block">
               Infra Nest IT
@@ -56,16 +72,13 @@ export default function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => scrollToSection(e, item.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                onClick={(e) => handleNavigation(e, item.href)}
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
               >
                 {item.name}
               </a>
             ))}
-            <Button onClick={(e) => {
-              const el = document.querySelector("#contact");
-              if(el) el.scrollIntoView({ behavior: "smooth" });
-            }}>Get Started</Button>
+            <Button onClick={(e) => handleNavigation(e, "#contact")}>Get Started</Button>
           </div>
 
           {/* Mobile Toggle */}
@@ -93,19 +106,15 @@ export default function Navbar() {
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => scrollToSection(e, item.href)}
-                  className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0"
+                  onClick={(e) => handleNavigation(e, item.href)}
+                  className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0 cursor-pointer"
                 >
                   {item.name}
                 </a>
               ))}
-              <Button className="w-full mt-4" onClick={(e) => {
-                 const el = document.querySelector("#contact");
-                 if(el) {
-                   el.scrollIntoView({ behavior: "smooth" });
-                   setIsOpen(false);
-                 }
-              }}>Get Started</Button>
+              <Button className="w-full mt-4" onClick={(e) => handleNavigation(e, "#contact")}>
+                Get Started
+              </Button>
             </div>
           </motion.div>
         )}
