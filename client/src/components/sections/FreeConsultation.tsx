@@ -50,14 +50,17 @@ export default function FreeConsultation() {
           </div>
 
           <div className="flex flex-col items-center lg:items-end gap-4">
-            <div className="bg-background/40 backdrop-blur-sm p-8 rounded-2xl border border-white/10 w-full max-w-md text-center">
+            {/* CHANGED: p-8 to p-6 md:p-8 to save space on mobile */}
+            <div className="bg-background/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-white/10 w-full max-w-md text-center">
               <Button 
                 size="lg" 
                 onClick={scrollToContact}
-                className="w-full text-lg py-6 mb-4 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
+                // CHANGED: Added "whitespace-normal h-auto text-base sm:text-lg" 
+                // Removed fixed "text-lg" to allow scaling
+                className="w-full whitespace-normal h-auto text-base sm:text-lg py-6 mb-4 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
               >
                 Schedule Free Consultation
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-5 h-5 shrink-0" /> {/* Added shrink-0 to icon */}
               </Button>
               
               <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm font-medium">
