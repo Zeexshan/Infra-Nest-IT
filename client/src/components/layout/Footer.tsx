@@ -136,9 +136,9 @@ export default function Footer() {
             © {new Date().getFullYear()} Infra Nest IT. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">
-              Privacy Policy
-            </a>
+            <Link href="/privacy" className="hover:text-foreground transition-colors cursor-pointer">
+  Privacy Policy
+</Link>
             
           <Link href="/terms" className="hover:text-foreground transition-colors cursor-pointer">
                     Terms of Service
