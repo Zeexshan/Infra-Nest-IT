@@ -1,0 +1,56 @@
+Project Requirements: Add Projects Page & Google Sheets Integration
+
+I need you to add a Projects portfolio page and integrate Google Sheets as a backend for form submissions with auto-reply emails. Follow these instructions precisely.
+
+### 1. Create Projects Portfolio Page
+**Goal:** Build a dedicated page to showcase past infrastructure/IT projects.
+
+**Implementation:**
+- **File to create:** `client/src/pages/Projects.tsx`
+- **Design requirements:**
+  - Use a responsive grid layout (2 columns on mobile, 3-4 on desktop).
+  - Match the existing dark theme using Shadcn UI components (Card, Badge, Button).
+  - Include a page header with title "Our Projects" and a brief description.
+- **Project Cards (Create 4 dummy projects):**
+  - **Image:** Use a tech-themed placeholder (e.g., https://placehold.co/600x400/1a1a1a/888888?text=Project).
+  - **Title:** e.g., "Enterprise Network Security Upgrade".
+  - **Description:** 2-3 sentences.
+  - **Tags:** 3-4 technology tags using Badge components (e.g., "Cisco", "Firewall", "AWS", "Docker").
+- **Routing:** Add the route `/projects` in `client/src/App.tsx`.
+- **Navigation:** Add a "Projects" link to `client/src/components/layout/Navbar.tsx` between "Home" and "Services".
+
+### 2. Google Sheets Form Integration
+**Goal:** Send contact form data to Google Sheets instead of using a database.
+
+**Step A: Create Utility Function**
+- **File:** `client/src/lib/google-sheets.ts`
+- **Function:** `export async function submitToGoogleSheets(formData)`
+- **Implementation Critical Detail:**
+  - Use `fetch()` to POST to `import.meta.env.VITE_GOOGLE_SCRIPT_URL`.
+  - Set `mode: 'no-cors'` (REQUIRED for Google Apps Script).
+  - **IMPORTANT:** Because of `no-cors`, the response will be opaque. The code must assume success if the `fetch` completes without throwing a network error. Do not try to read `response.json()` as it will fail.
+  - Return `{ success: true }` if no network error occurs.
+
+**Step B: Update Contact Forms**
+- **Files:** `client/src/components/sections/Contact.tsx` and `FreeConsultation.tsx`.
+- **Changes:**
+  - Use the new `submitToGoogleSheets` function.
+  - **Loading State:** Show a spinner or disabled button while submitting.
+  - **Success:** Show a toast/alert: "Thank you! Your message has been received. We'll reply to you at contact.infranestit@gmail.com within 24 hours."
+  - **Cleanup:** Clear form fields after success.
+
+### 3. Google Apps Script Backend Code
+**Goal:** Provide ready-to-use Google Apps Script code for me to deploy manually.
+
+**File to create:** `GOOGLE_SHEET_SETUP.md`
+- **Content:** Write a complete Markdown guide containing:
+  1.  **Instructions:** How to create a sheet, open Apps Script, and deploy as "Web App" (Execute as: Me, Access: Anyone).
+  2.  **The Code (doPost function):**
+      - **Save Data:** Append [Timestamp, Name, Email, Phone, Message, FormType] to the sheet.
+      - **Auto-Reply Email:** Use `MailApp.sendEmail` to send an HTML email to the user.
+        - **Subject:** "Thank you for contacting Infra Nest IT"
+        - **From:** The script will automatically use the owner's email (contact.infranestit@gmail.com).
+        - **Body:** A professional HTML template thanking them and promising a 24-hour response.
+  3.  **Sheet Headers:** List the exact headers I need to add to Row 1 (Date, Name, Email, Phone, Message, Type).
+
+Please execute these changes now.

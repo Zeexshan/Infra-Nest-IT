@@ -1,14 +1,60 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ArrowRight, Clock } from "lucide-react";
+import { CheckCircle2, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { submitToGoogleSheets } from "@/lib/google-sheets";
+import { useState } from "react";
+
+const quickFormSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Invalid email address"),
+});
 
 export default function FreeConsultation() {
-  const scrollToContact = () => {
-    const element = document.querySelector("#contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<z.infer<typeof quickFormSchema>>({
+    resolver: zodResolver(quickFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof quickFormSchema>) {
+    setIsSubmitting(true);
+    try {
+      await submitToGoogleSheets({
+        ...values,
+        form_type: "Free Consultation"
+      });
+      toast({
+        title: "Request Received!",
+        description: "Thank you! Your message has been received. We'll reply to you at contact.infranestit@gmail.com within 24 hours.",
+      });
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send request. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  };
+  }
 
   return (
     <section className="py-16 container mx-auto px-4 md:px-6">
@@ -50,20 +96,52 @@ export default function FreeConsultation() {
           </div>
 
           <div className="flex flex-col items-center lg:items-end gap-4">
-            {/* CHANGED: p-8 to p-6 md:p-8 to save space on mobile */}
-            <div className="bg-background/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-white/10 w-full max-w-md text-center">
-              <Button 
-                size="lg" 
-                onClick={scrollToContact}
-                // CHANGED: Added "whitespace-normal h-auto text-base sm:text-lg" 
-                // Removed fixed "text-lg" to allow scaling
-                className="w-full whitespace-normal h-auto text-base sm:text-lg py-6 mb-4 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
-              >
-                Schedule Free Consultation
-                <ArrowRight className="ml-2 w-5 h-5 shrink-0" /> {/* Added shrink-0 to icon */}
-              </Button>
+            <div className="bg-background/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-white/10 w-full max-w-md">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="Your Name" {...field} className="bg-background/50" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input placeholder="Your Email" {...field} className="bg-background/50" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button 
+                    type="submit"
+                    size="lg" 
+                    disabled={isSubmitting}
+                    className="w-full h-auto text-base sm:text-lg py-4 shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <>
+                        Schedule Consultation
+                        <ArrowRight className="ml-2 w-5 h-5 shrink-0" />
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </Form>
               
-              <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm font-medium">
+              <div className="flex items-center justify-center gap-2 mt-4 text-muted-foreground text-sm font-medium">
                 <Clock className="w-4 h-4" />
                 <span>Response time: Within 24 hours</span>
               </div>

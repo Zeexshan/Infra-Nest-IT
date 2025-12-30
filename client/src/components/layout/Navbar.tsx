@@ -9,6 +9,7 @@ import logo from "@assets/main_1764668585274.png";
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
+  { name: "Projects", href: "/projects" },
   { name: "Technologies", href: "#technologies" },
   { name: "Services", href: "#services" },
   { name: "Contact", href: "#contact" },
@@ -30,14 +31,18 @@ export default function Navbar() {
   }, []);
 
   const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, href: string) => {
+    // Check if it's a relative route (starts with /)
+    if (href.startsWith("/")) {
+      setIsOpen(false);
+      return; // Let Wouter handle standard link navigation
+    }
+
     e.preventDefault();
     
     // 3. Logic: If we are NOT on home, go to home. If we ARE on home, scroll.
     if (location !== "/") {
       setLocation("/");
       setIsOpen(false);
-      // Optional: You could save the 'href' to local storage to scroll after load, 
-      // but simply going to Home is the safest fix for now.
       return;
     }
 
@@ -59,24 +64,35 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="#home" onClick={(e) => handleNavigation(e, "#home")} className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <img src={logo} alt="Infra Nest IT" className="h-12 w-auto object-contain" />
             <span className="text-xl font-bold font-heading tracking-tight text-foreground hidden sm:block">
               Infra Nest IT
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleNavigation(e, item.href)}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-              >
-                {item.name}
-              </a>
+              item.href.startsWith("/") ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleNavigation(e, item.href)}
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                >
+                  {item.name}
+                </a>
+              )
             ))}
             <Button onClick={(e) => handleNavigation(e, "#contact")}>Get Started</Button>
           </div>
@@ -103,14 +119,25 @@ export default function Navbar() {
           >
             <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
               {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavigation(e, item.href)}
-                  className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0 cursor-pointer"
-                >
-                  {item.name}
-                </a>
+                item.href.startsWith("/") ? (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0 cursor-pointer"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={(e) => handleNavigation(e, item.href)}
+                    className="text-lg font-medium text-foreground py-2 border-b border-border/50 last:border-0 cursor-pointer"
+                  >
+                    {item.name}
+                  </a>
+                )
               ))}
               <Button className="w-full mt-4" onClick={(e) => handleNavigation(e, "#contact")}>
                 Get Started

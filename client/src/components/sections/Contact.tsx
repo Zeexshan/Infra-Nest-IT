@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Mail, Phone, MapPin, Send, Loader2, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from "@emailjs/browser";
+import { submitToGoogleSheets } from "@/lib/google-sheets";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -39,41 +39,30 @@ export default function Contact() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    const serviceId = "service_2x8ti1r";
-    const templateId = "template_9tugzf8";
-    const publicKey = "-yN0-T9hqjLEqKO_X";
-
-    const templateParams = {
-      user_name: values.name,
-      user_email: values.email,
-      contact_number: values.phone,
-      message: values.message,
-    };
-
-    emailjs
-      .send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        console.log("SUCCESS!", response.status, response.text);
-        toast({
-          title: "Message Sent!",
-          description: "We'll get back to you as soon as possible.",
-        });
-        form.reset();
-      })
-      .catch((err) => {
-        console.error("FAILED...", err);
-        toast({
-          title: "Failed to send message",
-          description: "Please try again later or contact us directly.",
-          variant: "destructive",
-        });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
+    try {
+      await submitToGoogleSheets({
+        ...values,
+        form_type: "Contact"
       });
+      
+      toast({
+        title: "Message Sent!",
+        description: "Thank you! Your message has been received. We'll reply to you at contact.infranestit@gmail.com within 24 hours.",
+      });
+      form.reset();
+    } catch (err) {
+      console.error("FAILED...", err);
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
